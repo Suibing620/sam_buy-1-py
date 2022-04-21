@@ -248,6 +248,26 @@ def getUserCart(addressList, storeList, uid):
                 if isSelected:
                     goodlist.append(goodlistitem)
 
+            promotionGoodsList = (myRet['data'].get('floorInfoList')[0].get('promotionFloorGoodsList'))
+            for i in range(0, len(promotionGoodsList)):
+                spuId = promotionGoodsList[i].get('promotionGoodsList')[0].get('spuId')
+                storeId = promotionGoodsList[i].get('promotionGoodsList')[0].get('storeId')
+                quantity = promotionGoodsList[i].get('promotionGoodsList')[0].get('quantity')
+                goodsName = promotionGoodsList[i].get('promotionGoodsList')[0].get('goodsName')
+                stockQuantity = promotionGoodsList[i].get('promotionGoodsList')[0].get('stockQuantity')
+                isSelected = promotionGoodsList[i].get('promotionGoodsList')[0].get('isSelected')
+                goodlistitem = {
+                    "spuId": spuId,
+                    "storeId": storeId,
+                    "isSelected": isSelected,
+                    "quantity": quantity,
+                    "goodsName": goodsName,
+                    "stockQuantity": stockQuantity
+                }
+                
+                if isSelected:
+                    goodlist.append(goodlistitem)
+                    
             # print(json.dumps(goodlist, sort_keys=True, indent=4, separators=(',', ':'), ensure_ascii=False))
             # print(json.dumps(goodlist, ensure_ascii=False))
 
