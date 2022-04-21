@@ -20,7 +20,8 @@ def getCapacityData():
         "storeDeliveryTemplateId": storeDeliveryTemplateId
     }
     try:
-        ret = requests.post(url=myUrl, headers=global_headers, data=json.dumps(data))
+        requests.packages.urllib3.disable_warnings()
+        ret = requests.post(url=myUrl, headers=global_headers, data=json.dumps(data), verify=False)
         # print(ret.text)
         myRet = ret.json()
         # print('#获取可用配送时间中')
@@ -53,7 +54,8 @@ def order(body_data):
     # print(global_headers)
     # print(body_data)
     try:
-        ret = requests.post(url=myUrl, headers=global_headers, data=json.dumps(body_data))
+        requests.packages.urllib3.disable_warnings()
+        ret = requests.post(url=myUrl, headers=global_headers, data=json.dumps(body_data), verify=False)
         # print(ret.text)
         myRet = ret.json()
         # print(myRet['msg'])

@@ -60,7 +60,8 @@ def getAmount(goodlist):
     }
 
     try:
-        ret = requests.post(url=myUrl, headers=headers, data=json.dumps(data))
+        requests.packages.urllib3.disable_warnings()
+        ret = requests.post(url=myUrl, headers=headers, data=json.dumps(data), verify=False)
         myRet = json.loads(ret.text)
         amount = ''
         if myRet['success']:
@@ -149,7 +150,8 @@ def getRecommendStoreListByLocation(latitude, longitude):
         'app-version': '5.0.45.1'
     }
     try:
-        ret = requests.post(url=myUrl, headers=headers, data=json.dumps(data))
+        requests.packages.urllib3.disable_warnings()
+        ret = requests.post(url=myUrl, headers=headers, data=json.dumps(data), verify=False)
         myRet = ret.json()
         storeList = myRet['data'].get('storeList')
         for i in range(0, len(storeList)):
@@ -223,7 +225,8 @@ def getUserCart(addressList, storeList, uid):
 
     }
     try:
-        ret = requests.post(url=myUrl, headers=headers, data=json.dumps(data))
+        requests.packages.urllib3.disable_warnings()
+        ret = requests.post(url=myUrl, headers=headers, data=json.dumps(data), verify=False)
         # print(ret.text)
         myRet = ret.json()
         if myRet['success']:
