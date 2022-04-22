@@ -137,7 +137,7 @@ def getRecommendStoreListByLocation(latitude, longitude):
         return False
 
 def getBaoGongInfo(uid, address):
-    global goodlist
+    global isGo
     myUrl = 'https://api-sams.walmartmobile.cn/api/v1/sams/decoration/portal/show/getPageData'
     data = {
         "uid": uid,
@@ -179,10 +179,52 @@ def getBaoGongInfo(uid, address):
         for good in goodlist:
             if int(good['spuStockQuantity']) > 0:
                 print("有货!!! 详情" + good['subTitle'])
-                # 通知自由发挥
-                notify(good['subTitle'])
+                if addCart(uid, good):
+                    isGo = False
             else:
                 print("无货... 详情" + good['subTitle'])
+
+def addCart(uid, good):
+    myUrl = 'https://api-sams.walmartmobile.cn/api/v1/sams/trade/cart/addCartGoodsInfo'
+    data = {
+        "uid": uid,
+        "cartGoodsInfoList": [
+            {
+                "spuId": good['spuId'],
+                "storeId": good['storeId'],
+                "increaseQuantity": 1,
+                "price": good['priceInfo'][0]['price'],
+                "goodsName": good['title']
+            }
+        ]
+    }
+    headers = {
+        'Host': 'api-sams.walmartmobile.cn',
+        'Connection': 'keep-alive',
+        'Accept': '*/*',
+        'Content-Type': 'application/json;charset=UTF-8',
+        'Content-Length': '45',
+        'Accept-Encoding': 'gzip, deflate',
+        'Accept-Language': 'zh-CN,zh;q=0.9',
+        'User-Agent': 'SamClub/5.0.45 (iPhone; iOS 15.4; Scale/3.00)',
+        'device-name': 'iPhone14,3',
+        'device-os-version': '15.4',
+        'device-id': deviceid,
+        'latitude': address.get('latitude'),
+        'device-type': 'ios',
+        'auth-token': authtoken,
+        'app-version': '5.0.45.1'
+    }
+    requests.packages.urllib3.disable_warnings()
+    ret = requests.post(url=myUrl, headers=headers, data=json.dumps(data), verify=False)
+    myRet = ret.json()
+    if not myRet['success']:
+        print("加入购物车失败... " + good['subTitle'])
+        return False
+    else:
+        print("加入购物车成功!!! " + good['subTitle'])
+        return True
+
 
 # 加入bark通知 url地址改为自己的!!!
 def notify(name):
@@ -214,4 +256,6 @@ if __name__ == '__main__':
         getBaoGongInfo(uid, address)
         sleep_time = random.randint(2000, 5000) / 1000
         sleep(sleep_time)
+    print("已经加入购物车")
+    # notify("已经加入购物车")
 
