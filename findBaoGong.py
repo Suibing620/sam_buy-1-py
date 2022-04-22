@@ -178,11 +178,11 @@ def getBaoGongInfo(uid, address):
         goodlist = myRet['data']['pageModuleVOList'][2]['renderContent']['goodsList']
         for good in goodlist:
             if int(good['spuStockQuantity']) > 0:
-                print("有货!!! 详情" + good['subTitle'])
+                print("有货!!! " + "名称:" + good['title'] + " 详情:" + good['subTitle'])
                 if addCart(uid, good):
                     isGo = False
             else:
-                print("无货... 详情" + good['subTitle'])
+                print("无货... " + "名称:" + good['title'] + " 详情:" + good['subTitle'])
 
 def addCart(uid, good):
     myUrl = 'https://api-sams.walmartmobile.cn/api/v1/sams/trade/cart/addCartGoodsInfo'
@@ -257,5 +257,5 @@ if __name__ == '__main__':
         sleep_time = random.randint(2000, 5000) / 1000
         sleep(sleep_time)
     print("已经加入购物车")
-    # notify("已经加入购物车")
+    notify("已经加入购物车")
 

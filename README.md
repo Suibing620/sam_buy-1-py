@@ -11,7 +11,7 @@ owner :@guyongzx
 
 #### 4.22 更新
 
-加入保供套餐搜寻 findBaoGong.py
+加入保供套餐搜寻,并且自动加入购物车功能 findBaoGong.py 
 
 直接运行即可
 
