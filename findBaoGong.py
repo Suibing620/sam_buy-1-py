@@ -169,20 +169,23 @@ def getBaoGongInfo(uid, address):
         'auth-token': authtoken,
         'app-version': '5.0.45.1'
     }
-    requests.packages.urllib3.disable_warnings()
-    ret = requests.post(url=myUrl, headers=headers, data=json.dumps(data), verify=False)
-    myRet = ret.json()
-    if not myRet['success']:
-        return
-    else:
-        goodlist = myRet['data']['pageModuleVOList'][2]['renderContent']['goodsList']
-        for good in goodlist:
-            if int(good['spuStockQuantity']) > 0:
-                print("有货!!! " + "名称:" + good['title'] + " 详情:" + good['subTitle'])
-                if addCart(uid, good):
-                    isGo = False
-            else:
-                print("无货... " + "名称:" + good['title'] + " 详情:" + good['subTitle'])
+    try:
+        requests.packages.urllib3.disable_warnings()
+        ret = requests.post(url=myUrl, headers=headers, data=json.dumps(data), verify=False)
+        myRet = ret.json()
+        if not myRet['success']:
+            return
+        else:
+            goodlist = myRet['data']['pageModuleVOList'][2]['renderContent']['goodsList']
+            for good in goodlist:
+                if int(good['spuStockQuantity']) > 0:
+                    print("有货!!! " + "名称:" + good['title'] + " 详情:" + good['subTitle'])
+                    if addCart(uid, good):
+                        isGo = False
+                else:
+                    print("无货... " + "名称:" + good['title'] + " 详情:" + good['subTitle'])
+    except Exception as e:
+        print('getBaoGongInfo [Error]: ' + str(e))
 
 def addCart(uid, good):
     myUrl = 'https://api-sams.walmartmobile.cn/api/v1/sams/trade/cart/addCartGoodsInfo'
@@ -215,16 +218,18 @@ def addCart(uid, good):
         'auth-token': authtoken,
         'app-version': '5.0.45.1'
     }
-    requests.packages.urllib3.disable_warnings()
-    ret = requests.post(url=myUrl, headers=headers, data=json.dumps(data), verify=False)
-    myRet = ret.json()
-    if not myRet['success']:
-        print("加入购物车失败... " + good['subTitle'])
-        return False
-    else:
-        print("加入购物车成功!!! " + good['subTitle'])
-        return True
-
+    try:
+        requests.packages.urllib3.disable_warnings()
+        ret = requests.post(url=myUrl, headers=headers, data=json.dumps(data), verify=False)
+        myRet = ret.json()
+        if not myRet['success']:
+            print("加入购物车失败... " + good['subTitle'])
+            return False
+        else:
+            print("加入购物车成功!!! " + good['subTitle'])
+            return True
+    except Exception as e:
+        print('addCart [Error]: ' + str(e))
 
 # 加入bark通知 url地址改为自己的!!!
 def notify(name):
