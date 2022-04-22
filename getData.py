@@ -94,7 +94,8 @@ def address_list():
         'auth-token': authtoken,
         'app-version': '5.0.45.1'
     }
-    ret = requests.get(url=myUrl, headers=headers)
+    requests.packages.urllib3.disable_warnings()
+    ret = requests.get(url=myUrl, headers=headers, verify=False)
     myRet = ret.json()
     addressList = myRet['data'].get('addressList')
     addressList_item = []
@@ -170,6 +171,7 @@ def getRecommendStoreListByLocation(latitude, longitude):
         s = int(input())
         good_store = storeList_item[s]
         uidUrl = 'https://api-sams.walmartmobile.cn/api/v1/sams/sams-user/user/personal_center_info'
+        requests.packages.urllib3.disable_warnings()
         ret = requests.get(url=uidUrl, headers={
             'Host': 'api-sams.walmartmobile.cn',
             'Connection': 'keep-alive',
@@ -184,7 +186,7 @@ def getRecommendStoreListByLocation(latitude, longitude):
             'device-type': 'ios',
             'auth-token': authtoken,
             'app-version': '5.0.45.1'
-        })
+        }, verify=False)
         # print(ret.text)
         uidRet = json.loads(ret.text)
         uid = uidRet['data']['memInfo']['uid']

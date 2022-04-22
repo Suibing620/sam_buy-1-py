@@ -9,7 +9,14 @@ owner :@guyongzx
 
 ###
 
+#### 4.22 更新
+
+加入保供套餐搜寻 findBaoGong.py
+
+直接运行即可
+
 #### 4.19 更新 
+
 加入动态加载order的request body参数,修改data.txt文件可以不用重启直接反应到order请求中,用于临时修改商品列表或者其他参数
 
 如果想完全盲猜不调用getCapacityData接口,可以将guess置为True

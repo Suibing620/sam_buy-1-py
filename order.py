@@ -75,7 +75,8 @@ def notify():
     for i in range(0, 3):
         myUrl = 'https://api.day.app/xxxxxxxxxx/山姆抢到了!!!/快去看看!!!'
         try:
-            requests.get(url=myUrl)
+            requests.packages.urllib3.disable_warnings()
+            requests.get(url=myUrl, verify=False)
             sleep(10)
         except Exception as e:
             print('notify [Error]: ' + str(e))
